@@ -6,7 +6,7 @@ const path = require('path');
 const app = new Koa();
 const router = new Router();
 
-router.get('*', (ctx) => {
+router.get('/api', (ctx) => {
   ctx.type = 'json';
   ctx.body = {
     greetings: ['yo', 'howdy', 'sup']
@@ -14,7 +14,10 @@ router.get('*', (ctx) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(serve(path.resolve(__dirname, 'client', 'build', 'index.html')));
+  app.use(serve(path.resolve(__dirname, 'client', 'build')));
+  router.get('*', (ctx) => {
+    ctx.render('index.html');
+  });
 }
 
 app.use(router.routes()).use(router.allowedMethods());
