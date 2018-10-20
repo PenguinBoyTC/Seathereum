@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import Navbar from './components/Navbar';
+import React from 'react';
 import Banner from './components/Banner';
-class App extends Component {
-  render() {
-    return (
-      <div className="app">
-        <Banner />
-        <Navbar />
-      </div>
-    );
-  }
-}
+import Navbar from './components/Navbar';
+import Routes from './components/Routes';
+import {BrowserRouter as Router} from 'react-router-dom';
+const App = () => (
+  <Router>
+    <div>
+      <Banner />
+      <Navbar />
+      <Routes />
+    </div>
+  </Router>
+);
 
 export default App;
