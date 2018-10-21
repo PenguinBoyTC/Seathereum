@@ -1,32 +1,32 @@
 import React from 'react';
-import Market from './Market';
-import About from './About';
-import Home from './Home';
 import {Route, Switch} from 'react-router-dom';
+import Market from './Market';
 
 export const routes = [
   {
-    path: '/home',
-    component: Home
+    displayAs: 'Home',
+    exact: true,
+    path: '/',
+    render: () => <h1 className="display-1 text-center">home</h1>
   },
   {
+    displayAs: 'Market',
     path: '/market',
-    component: Market
+    render: Market
   },
   {
+    displayAs: 'About',
     path: '/about',
-    component: About
+    render: () => <h1 className="display-1 text-center">about</h1>
   }
 ];
 
-const Routes = () => {
-  return (
-    <Switch>
-      {routes.map(({path, component}) => (
-        <Route path={path} render={component} />
-      ))}
-    </Switch>
-  );
-};
+const Routes = () => (
+  <Switch>
+    {routes.map((route, i) => (
+      <Route key={i} {...route} />
+    ))}
+  </Switch>
+);
 
 export default Routes;
