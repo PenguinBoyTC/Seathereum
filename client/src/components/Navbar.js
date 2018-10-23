@@ -5,7 +5,7 @@ import {routes} from './Routes';
 const Links = () =>
   routes.map(({path, displayAs}, i) => (
     <NavLink key={i} className="nav-item nav-link" to={path}>
-      {displayAs}
+      <h5>{displayAs}</h5>
     </NavLink>
   ));
 

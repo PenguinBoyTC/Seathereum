@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import Market from './Market';
+import Market from './market/Market';
 
 export const routes = [
   {
