@@ -5,7 +5,7 @@ import Routes from './components/Routes';
 import {BrowserRouter as Router} from 'react-router-dom';
 const App = () => (
   <Router>
-    <div>
+    <div className="bg-light">
       <Banner />
       <Navbar />
       <Routes />
