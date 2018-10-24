@@ -1,16 +1,10 @@
 import React from 'react';
-import Banner from './components/Banner';
-import Navbar from './components/Navbar';
-import Routes from './components/Routes';
-import {BrowserRouter as Router} from 'react-router-dom';
+import Router from './components/Router';
+
 const App = () => (
-  <Router>
-    <div className="bg-light">
-      <Banner />
-      <Navbar />
-      <Routes />
-    </div>
-  </Router>
+  <div className="bg-light" style={{height: '100vh'}}>
+    <Router />;
+  </div>
 );
 
 export default App;
