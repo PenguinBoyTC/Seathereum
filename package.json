@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/joshwashywash/Seathereum#readme",
   "dependencies": {
-    "koa": "^2.5.3",
+    "koa": "^2.6.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0"
   },
   "devDependencies": {
     "concurrently": "^4.0.1",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.5"
   }
 }

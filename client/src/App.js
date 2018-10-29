@@ -1,10 +1,20 @@
 import React from 'react';
-import Router from './components/Router';
+import Banner from './components/Banner';
+import Navbar from './components/Navbar';
+import routes from './routes';
+import {Switch, Route, Redirect} from 'react-router-dom';
 
 const App = () => (
-  <div className="bg-light" style={{height: '100vh'}}>
-    <Router />;
-  </div>
+  <>
+    <Banner />
+    <Navbar />
+    <Switch>
+      {routes.map((route, i) => (
+        <Route key={i} {...route} />
+      ))}
+      <Redirect from="*" to="/" />
+    </Switch>
+  </>
 );
 
 export default App;

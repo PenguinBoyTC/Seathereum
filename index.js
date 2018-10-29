@@ -8,9 +8,7 @@ const router = new Router();
 
 if (process.env.NODE_ENV === 'production') {
   app.use(serve(path.resolve(__dirname, 'client', 'build')));
-  router.get('*', (ctx) => {
-    ctx.render('index.html');
-  });
+  router.get('*', (ctx) => ctx.render('index.html'));
 }
 
 app.use(router.routes()).use(router.allowedMethods());
