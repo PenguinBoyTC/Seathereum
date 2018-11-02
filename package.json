@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/joshwashywash/Seathereum#readme",
   "dependencies": {
+    "drizzle-react": "^1.2.0",
     "koa": "^2.6.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0"
