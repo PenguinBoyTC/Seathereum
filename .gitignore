@@ -83,3 +83,6 @@ typings/
 
 # vs code workspace config
 .vscode
+*.json
+truffle/build/contracts/AquariumGarden.json
+truffle/build/contracts/ERC721Metadata.json

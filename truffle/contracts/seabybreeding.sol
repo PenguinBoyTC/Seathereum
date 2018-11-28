@@ -4,6 +4,8 @@ import "./ownership.sol";
 
 
 contract SeabyBreeding is Ownership {
+    //  When two Seabies successfully breed and the pregnancy
+    //  timer begins to count. 
     event Pregnant(address owner);
     function _isReadyToBreed(Seaby _seaby) internal view returns (bool) {
         return true;
