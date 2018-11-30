@@ -26,7 +26,7 @@ contract AquariumGarden is Ownable {
     mapping (address => uint) ownerSeabyCount;
     //  An internal method that creates a new Seaby and stores it. Will generate both a Birth event
     //  and a Transfer event.
-    function _createSeaby(string _name, uint _dna, uint16 _generation, address _owner) internal {
+    function _createSeaby(string _name, uint _dna, uint16 _generation,address _owner) internal {
         uint _siringCD = 1 days;
 
         Seaby memory _seaby = Seaby({
@@ -37,24 +37,21 @@ contract AquariumGarden is Ownable {
             siringCD:  _siringCD
         });
         uint NewCBId = seabies.push(_seaby)-1;
-        SeabyToOwner[NewCBId] = msg.sender;
-        ownerSeabyCount[msg.sender]++;
         SeabyBirth(NewCBId, _name, _dna);
         _transfer(0,_owner,NewCBId);
-
     }
     // A return function that will generate a random DNA sequence by a string and return DNA
-    function _generateRandomDna(string _str) private view returns (uint) {
+    function _generateRandomDna(string _str) public view returns (uint) {
         uint rand = uint(keccak256(_str));
         return rand % dnaModulus;
     }
     // A return function that will generate a new Seaby by calling _createSeaby function and return its DNA sequence
     function createRandomSeaby(string _name) public returns (uint){
-        require(ownerSeabyCount[msg.sender] == 0);
+        //require(ownerSeabyCount[msg.sender] == 0);
         uint m_Dna = _generateRandomDna(_name);
         m_Dna = m_Dna - m_Dna % 100;
         address _owner = msg.sender;
-        _createSeaby(_name, m_Dna, 0, _owner);
+        _createSeaby(_name, m_Dna, 0,_owner);
         return m_Dna;
     }
     // A internal function that can transfer a Seaby from one to other and generate a TransferFinish event.
@@ -66,5 +63,4 @@ contract AquariumGarden is Ownable {
         }
         TransferFinish(_from,_to,_tokenId);
     }
-
 }

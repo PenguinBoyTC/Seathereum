@@ -1,5 +1,5 @@
-var aquariumgarden = artifacts.require("./aquariumgarden.sol");
+var AquariumGarden = artifacts.require("./AquariumGarden.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(aquariumgarden);
+  deployer.deploy(AquariumGarden);
 };
