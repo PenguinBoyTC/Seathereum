@@ -6,7 +6,7 @@ contract AquariumGarden is Ownable {
     //  The Birth event is called whenever a new creature is created.
     event SeabyBirth(uint seabyId, string name);
     //  The TransferFinish is called when a transaction is over.
-    event TransferFinish(address from, address to, uint256 tokenId);
+    event TransferFinish(address from, address to, uint256 seabyId);
 
     //  The data structure of Seaby
     struct Seaby {
@@ -24,6 +24,8 @@ contract AquariumGarden is Ownable {
     mapping (uint => address) public SeabyToOwner;
     // A mapping from owner address to count of tokens that address owns.
     mapping (address => uint) ownerSeabyCount;
+
+    mapping (uint => address) public seabyApprovals;
     
     function _getNumberOfFeatures() internal view returns(uint8) {
         return _numberOfFeatures;    
@@ -83,12 +85,12 @@ contract AquariumGarden is Ownable {
         _createSeaby(_name, 0, _owner, _randFeatures);
     }
     // A internal function that can transfer a Seaby from one to other and generate a TransferFinish event.
-    function _transfer(address _from, address _to, uint256 _tokenId) internal{
+    function _transfer(address _from, address _to, uint256 _seabyId) internal{
         ownerSeabyCount[_to]++;
-        SeabyToOwner[_tokenId] = _to;
+        SeabyToOwner[_seabyId] = _to;
         if(_from != address(0)){
             ownerSeabyCount[_from]--;
         }
-        TransferFinish(_from,_to,_tokenId);
+        TransferFinish(_from,_to,_seabyId);
     }
 }
