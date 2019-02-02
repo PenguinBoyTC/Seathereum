@@ -87,3 +87,4 @@ typings/
 truffle/build/contracts/AquariumGarden.json
 truffle/build/contracts/ERC721Metadata.json
 *.json
+*.json

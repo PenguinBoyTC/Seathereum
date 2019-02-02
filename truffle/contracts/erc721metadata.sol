@@ -1,8 +1,5 @@
-pragma solidity ^0.4.19;
-
-
 contract ERC721Metadata {
-    function getMetadata(uint256 _tokenId, string) public view returns (bytes32[4] buffer, uint256 count) {
+    function getMetadata(uint256 _tokenId) public view returns (bytes32[4] memory buffer, uint256 count) {
         if (_tokenId == 1) {
             buffer[0] = "Hello World!";
             count = 15;
