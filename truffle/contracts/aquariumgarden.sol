@@ -85,7 +85,7 @@ contract AquariumGarden is Ownable {
         _createSeaby(_name, 0, _owner, _randFeatures);
     }
     // A internal function that can transfer a Seaby from one to other and generate a TransferFinish event.
-    function _transfer(address _from, address _to, uint256 _seabyId) internal{
+    function _transfer(address _from, address _to, uint256 _seabyId) internal {
         ownerSeabyCount[_to]++;
         SeabyToOwner[_seabyId] = _to;
         if(_from != address(0)){
