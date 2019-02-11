@@ -13,11 +13,28 @@ contract SeabyBreeding is Ownership {
     function _isReadyToGiveBirth(Seaby _mom) private view returns (bool) {
         return true;
     }
-    function isReadyToBreed(uint256 _seabyId) public view returns (bool) {
+    function isReadyToBreed(uint _seabyId) public view returns (bool) {
         require(_seabyId > 0);
         Seaby storage seaby = seabies[_seabyId];
         return _isReadyToBreed(seaby);
     }
+    function changeName(uint _seabyId, string _newName) external {
+        require(msg.sender == SeabyToOwner[_seabyId]);
+        seabies[_seabyId].name = _newName;
+    }
+    function changeForSaleStatus(uint _seabyId) external {
+        require(msg.sender == SeabyToOwner[_seabyId]);
+        seabies[_seabyId].forSale = !seabies[_seabyId].forSale;
+    }
+    function getSeabiesByOwner(address _owner) external view returns(uint[]) {
+        uint[] memory allSeabies = new uint[](ownerSeabyCount[_owner]);
+        uint counter = 0;
+        for (uint i = 0; i < allSeabies.length; i++) {
+            if (SeabyToOwner[i] == _owner) {
+                allSeabies[counter++] = i;
+            }
+        }
+        return allSeabies;
+    }
 
-  
 }
