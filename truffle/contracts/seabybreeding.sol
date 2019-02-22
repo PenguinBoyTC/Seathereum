@@ -33,7 +33,7 @@ contract SeabyBreeding is Ownership {
     function getSeabiesByOwner(address _owner) external view returns(uint[]) {
         uint[] memory allSeabies = new uint[](ownerSeabyCount[_owner]);
         uint counter = 0;
-        for (uint i = 0; i < allSeabies.length; i++) {
+        for (uint i = 0; i < seabies.length; i++) {
             if (SeabyToOwner[i] == _owner) {
                 allSeabies[counter++] = i;
             }
