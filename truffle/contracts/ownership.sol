@@ -2,10 +2,15 @@ pragma solidity ^0.4.19;
 
 import "./AquariumGarden.sol";
 import "./ERC721.sol";
+// import "./ERC721Metadata.sol";
+import "../../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol"
 
-contract Ownership is AquariumGarden, ERC721 {
-    // ERC721Metadata public erc721Metadata;
+contract Ownership is AquariumGarden {
+    ERC721Metadata public erc721Metadata;
 
+    function setMetadataAddress(address _contractAddress) public {
+        erc721Metadata = ERC721Metadata(_contractAddress);
+    }
 
     function balanceOf(address _owner) public view returns (uint256 _balance) {
         return ownerSeabyCount[_owner];
@@ -15,7 +20,7 @@ contract Ownership is AquariumGarden, ERC721 {
         return SeabyToOwner[_tokenId];
     }
     // transfer the given Seaby to others
-    function transfer(address _to, uint256 _tokenId) public {
+    function transfer(address _to, uint256 _tokenId) public requireOwnerOf(_tokenId) {
         require(_to != address(0));
         require(_to != address(this));
         // require(_to != address(saleAuction));
@@ -25,7 +30,7 @@ contract Ownership is AquariumGarden, ERC721 {
         _transfer(msg.sender, _to, _tokenId);
     }
 
-    function approve(address _to, uint256 _tokenId) public {
+    function approve(address _to, uint256 _tokenId) public requireOwnerOf(_tokenId) {
         require(_isOwns(msg.sender, _tokenId));
         seabyApprovals[_tokenId] = _to;
         Approval(msg.sender, _to, _tokenId);
@@ -43,5 +48,8 @@ contract Ownership is AquariumGarden, ERC721 {
     }
     function isForSale(uint256 _tokenId) public view returns (bool){
         return seabies[_tokenId].forSale;
+    }
+    function totalSeaby() public view returns (uint){
+        return seabies.length - 1;
     }
 }
