@@ -7,6 +7,10 @@ contract SeabyBreeding is Ownership {
     //  When two Seabies successfully breed and the pregnancy
     //  timer begins to count. 
     event Pregnant(address owner);
+    modifier requireOwnerOf(uint _seabyId) {
+        require(msg.sender == SeabyToOwner[_seabyId]);
+        _;
+    }
     function _isReadyToBreed(Seaby _seaby) internal view returns (bool) {
         return true;
     }
@@ -18,11 +22,11 @@ contract SeabyBreeding is Ownership {
         Seaby storage seaby = seabies[_seabyId];
         return _isReadyToBreed(seaby);
     }
-    function changeName(uint _seabyId, string _newName) external {
+    function changeName(uint _seabyId, string _newName) external requireOwnerOf(_seabyId) {
         require(msg.sender == SeabyToOwner[_seabyId]);
         seabies[_seabyId].name = _newName;
     }
-    function changeForSaleStatus(uint _seabyId) external {
+    function changeForSaleStatus(uint _seabyId) external requireOwnerOf(_seabyId) {
         require(msg.sender == SeabyToOwner[_seabyId]);
         seabies[_seabyId].forSale = !seabies[_seabyId].forSale;
     }
@@ -35,6 +39,9 @@ contract SeabyBreeding is Ownership {
             }
         }
         return allSeabies;
+    }
+    function withdraw() external onlyOwner {
+        owner.transfer(this.balance);
     }
 
 }
