@@ -1,8 +1,11 @@
 pragma solidity ^0.4.19;
 
 import "./Ownable.sol";
+import "../../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol"
 
-contract AquariumGarden is Ownable {
+contract AquariumGarden is Ownable, ERC721Full {
+    constructor() ERC721("Seaby","SB") public {}
+
     //  The Birth event is called whenever a new creature is created.
     event SeabyBirth(uint seabyId, string name);
     //  The TransferFinish is called when a transaction is over.
@@ -51,6 +54,7 @@ contract AquariumGarden is Ownable {
         _setFeatures(NewCBId,_features);
         SeabyBirth(NewCBId, _name);
         _transfer(0,_owner,NewCBId);
+        _mint(_owner, NewCBId);
     }
     function _setFeatures(uint _seabyId, uint16[] _features) internal{
         Seaby storage _seaby = seabies[_seabyId];
