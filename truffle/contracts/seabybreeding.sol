@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.5.0;
 
 import "./Ownership.sol";
 
@@ -6,23 +6,23 @@ import "./Ownership.sol";
 contract SeabyBreeding is Ownership {
     //  When two Seabies successfully breed and the pregnancy
     //  timer begins to count. 
-    event Pregnant(address owner);
+    event Pregnant(address indexed owner);
     modifier requireOwnerOf(uint _seabyId) {
         require(msg.sender == SeabyToOwner[_seabyId]);
         _;
     }
-    function _isReadyToBreed(Seaby _seaby) internal view returns (bool) {
-        return true;
-    }
-    function _isReadyToGiveBirth(Seaby _mom) private view returns (bool) {
-        return true;
-    }
-    function isReadyToBreed(uint _seabyId) public view returns (bool) {
-        require(_seabyId > 0);
-        Seaby storage seaby = seabies[_seabyId];
-        return _isReadyToBreed(seaby);
-    }
-    function changeName(uint _seabyId, string _newName) external requireOwnerOf(_seabyId) {
+    // function _isReadyToBreed(Seaby _seaby) internal view returns (bool) {
+    //     return true;
+    // }
+    // function _isReadyToGiveBirth(Seaby _mom) private view returns (bool) {
+    //     return true;
+    // }
+    // function isReadyToBreed(uint _seabyId) public view returns (bool) {
+    //     require(_seabyId > 0);
+    //     Seaby storage seaby = seabies[_seabyId];
+    //     return _isReadyToBreed(seaby);
+    // }
+    function changeName(uint _seabyId, string calldata _newName) external requireOwnerOf(_seabyId) {
         require(msg.sender == SeabyToOwner[_seabyId]);
         seabies[_seabyId].name = _newName;
     }
@@ -30,7 +30,7 @@ contract SeabyBreeding is Ownership {
         require(msg.sender == SeabyToOwner[_seabyId]);
         seabies[_seabyId].forSale = !seabies[_seabyId].forSale;
     }
-    function getSeabiesByOwner(address _owner) external view returns(uint[]) {
+    function getSeabiesByOwner(address _owner) external view returns(uint[] memory) {
         uint[] memory allSeabies = new uint[](ownerSeabyCount[_owner]);
         uint counter = 0;
         for (uint i = 0; i < seabies.length; i++) {
@@ -40,8 +40,8 @@ contract SeabyBreeding is Ownership {
         }
         return allSeabies;
     }
-    function withdraw() external onlyOwner {
-        owner.transfer(this.balance);
-    }
+    // function withdraw() external onlyOwner {
+    //     owner.transfer(address(this).balance);
+    // }
 
 }

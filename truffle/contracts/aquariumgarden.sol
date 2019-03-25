@@ -1,20 +1,21 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.5.0;
 
 import "./Ownable.sol";
-import "../../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol"
+import "./lib/token/ERC721/ERC721Full.sol";
+import "./lib/token/ERC721/ERC721Mintable.sol";
+contract AquariumGarden is Ownable, ERC721Full, ERC721Mintable {
+    constructor() ERC721Full("Seaby", "SAG") public {
 
-contract AquariumGarden is Ownable, ERC721Full {
-    constructor() ERC721("Seaby","SB") public {}
-
+    }
     //  The Birth event is called whenever a new creature is created.
-    event SeabyBirth(uint seabyId, string name);
+    event SeabyBirth(uint indexed seabyId, string indexed name);
     //  The TransferFinish is called when a transaction is over.
-    event TransferFinish(address from, address to, uint256 seabyId);
+    event TransferFinish(address indexed from, address indexed to, uint256 indexed seabyId);
 
     //  The data structure of Seaby
     struct Seaby {
       string name;
-      uint16 generation;//?
+      uint16 generation;//
       uint64 birthtime;
       // The coolddown for the next breeding
       uint siringCD;
@@ -39,7 +40,7 @@ contract AquariumGarden is Ownable, ERC721Full {
     
     //  An internal method that creates a new Seaby and stores it. Will generate both a Birth event
     //  and a Transfer event.
-    function _createSeaby(string _name, uint16 _generation, address _owner, uint16[] _features) internal {
+    function _createSeaby(string memory _name, uint16 _generation, address _owner, uint16[] memory _features) internal {
         uint _siringCD = 1 days;
         
         Seaby memory _seaby = Seaby({
@@ -52,11 +53,11 @@ contract AquariumGarden is Ownable, ERC721Full {
 
         uint NewCBId = seabies.push(_seaby)-1;
         _setFeatures(NewCBId,_features);
-        SeabyBirth(NewCBId, _name);
-        _transfer(0,_owner,NewCBId);
+        emit SeabyBirth(NewCBId, _name);
+        _transfer(0x0000000000000000000000000000000000000000, _owner, NewCBId);
         _mint(_owner, NewCBId);
     }
-    function _setFeatures(uint _seabyId, uint16[] _features) internal{
+    function _setFeatures(uint _seabyId, uint16[] memory _features) internal{
         Seaby storage _seaby = seabies[_seabyId];
         for (uint8 i = 0; i < _features.length; i++){
             _seaby.features[i] = _features[i];
@@ -66,7 +67,7 @@ contract AquariumGarden is Ownable, ERC721Full {
     function _generateRandomFeatures() internal view returns (uint16) {
         // uint rand = uint(keccak256(_str));
         uint8 randNonce = 3;//should be a seed of random number
-        uint random = uint(keccak256(now, msg.sender, randNonce)) % 100;//0-100 random number
+        uint random = uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % 100;//0-100 random number
         if (random <= 33){
             return 1;
         }
@@ -78,7 +79,7 @@ contract AquariumGarden is Ownable, ERC721Full {
         }
     }
     // A return function that will generate a new Seaby by calling _createSeaby function and return an array of features
-    function createRandomSeaby(string _name) public {
+    function createRandomSeaby(string memory _name) public {
         //require(ownerSeabyCount[msg.sender] == 0);
         address _owner = msg.sender;
         // int size = 4;
@@ -95,6 +96,6 @@ contract AquariumGarden is Ownable, ERC721Full {
         if(_from != address(0)){
             ownerSeabyCount[_from]--;
         }
-        TransferFinish(_from,_to,_seabyId);
+        emit TransferFinish(_from,_to,_seabyId);
     }
 }
