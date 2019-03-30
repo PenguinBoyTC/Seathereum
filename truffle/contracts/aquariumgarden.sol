@@ -16,8 +16,9 @@ contract AquariumGarden is Ownable, ERC721Full, ERC721Mintable {
     struct Seaby {
       string name;
       uint16 generation;//
-      uint64 birthtime;
+      uint64 birthTime;
       // The coolddown for the next breeding
+      uint siringPartnerID;
       uint siringCD;
       bool forSale;
       mapping (uint8 => uint16) features;//0-eyes. 1-mouth. 2-color 3-body
@@ -30,6 +31,8 @@ contract AquariumGarden is Ownable, ERC721Full, ERC721Mintable {
     mapping (address => uint) ownerSeabyCount;
 
     mapping (uint => address) public seabyApprovals;
+
+    mapping (uint256 => address) public seabyAllowedBreedToAddress;
     
     function _getNumberOfFeatures() internal view returns(uint8) {
         return _numberOfFeatures;    
@@ -46,7 +49,8 @@ contract AquariumGarden is Ownable, ERC721Full, ERC721Mintable {
         Seaby memory _seaby = Seaby({
             name: _name,
             generation: _generation,
-            birthtime: uint64(now),
+            birthTime: uint64(now),
+            siringPartnerID: 0,
             siringCD:  _siringCD,
             forSale: false
         });
@@ -62,6 +66,14 @@ contract AquariumGarden is Ownable, ERC721Full, ERC721Mintable {
         for (uint8 i = 0; i < _features.length; i++){
             _seaby.features[i] = _features[i];
         }
+    }
+    function getFeaturesById(uint _seabyId) public view returns (uint16[] memory) {
+        require(msg.sender == SeabyToOwner[_seabyId]);
+        uint16[] memory _features = new uint16[](_numberOfFeatures);
+        for (uint8 i = 0; i < _numberOfFeatures; i++) {
+            _features[i] = seabies[_seabyId].features[i];
+        }
+        return _features;
     }
     // A return function that will generate a random style by a feature index and return style of feature
     function _generateRandomFeatures() internal view returns (uint16) {
@@ -95,6 +107,8 @@ contract AquariumGarden is Ownable, ERC721Full, ERC721Mintable {
         SeabyToOwner[_seabyId] = _to;
         if(_from != address(0)){
             ownerSeabyCount[_from]--;
+            delete seabyAllowedBreedToAddress[_seabyId];
+            delete seabyApprovals[_seabyId];
         }
         emit TransferFinish(_from,_to,_seabyId);
     }
