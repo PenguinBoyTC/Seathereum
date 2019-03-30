@@ -1,8 +1,6 @@
 pragma solidity ^0.5.0;
 
 import "./AquariumGarden.sol";
-// import "./ERC721.sol";
-//import "../../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol"
 
 contract Ownership is AquariumGarden {
 
@@ -13,7 +11,7 @@ contract Ownership is AquariumGarden {
     function ownerOf(uint256 _tokenId) public view returns (address _owner) {
         return SeabyToOwner[_tokenId];
     }
-    // transfer the given Seaby to others
+    // sender transfer the given Seaby(_tokenId) to address (_to)
     function transfer(address _to, uint256 _tokenId) public {
         require(_to != address(0));
         require(_to != address(this));
@@ -24,10 +22,15 @@ contract Ownership is AquariumGarden {
         _transfer(msg.sender, _to, _tokenId);
     }
 
+    // approve Seaby(_tokenId) can be transfered to address(_to)
     function approve(address _to, uint256 _tokenId) public {
         require(_isOwns(msg.sender, _tokenId));
         seabyApprovals[_tokenId] = _to;
         emit Approval(msg.sender, _to, _tokenId);
+    }
+    function disApprove(uint256 _tokenId) public {
+        require(_isOwns(msg.sender, _tokenId));
+        seabyApprovals[_tokenId] = msg.sender;
     }
 
     function takeOwnership(uint256 _tokenId) public {
